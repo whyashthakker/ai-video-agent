@@ -1,0 +1,19 @@
+[phases.setup]
+aptPkgs = [
+    "...", 
+    "ffmpeg", 
+    "imagemagick", 
+    "ghostscript", 
+    "gsfonts", 
+    "fonts-droid-fallback", 
+    "fonts-noto-mono", 
+    "fonts-urw-base35",
+    "fonts-liberation",
+]
+
+cmds = [
+    "cp fonts/Humor-Sans-1.0.ttf /usr/share/fonts/truetype/",
+    "cp fonts/Poppins-Bold.ttf /usr/share/fonts/truetype/", 
+    "sed -i 's/none/read,write/g' /etc/ImageMagick-6/policy.xml",
+    "fc-cache -fv"
+]
