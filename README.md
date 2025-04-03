@@ -111,19 +111,19 @@ flowchart TD
     ProcessingError --> CleanupFiles
     
     %% Style definitions
-    classDef start fill:#4CAF50,stroke:#388E3C,color:white;
-    classDef end fill:#F44336,stroke:#D32F2F,color:white;
-    classDef process fill:#E3F2FD,stroke:#1976D2,color:#0D47A1;
-    classDef decision fill:#FFF9C4,stroke:#FBC02D,color:#5D4037;
-    classDef error fill:#FFEBEE,stroke:#C62828,color:#B71C1C;
-    classDef success fill:#E8F5E9,stroke:#388E3C,color:#1B5E20;
+    classDef start fill:#4CAF50,stroke:#388E3C,color:white
+    classDef end fill:#F44336,stroke:#D32F2F,color:white
+    classDef process fill:#E3F2FD,stroke:#1976D2,color:#0D47A1
+    classDef decision fill:#FFF9C4,stroke:#FBC02D,color:#5D4037
+    classDef error fill:#FFEBEE,stroke:#C62828,color:#B71C1C
+    classDef success fill:#E8F5E9,stroke:#388E3C,color:#1B5E20
     
-    class Start,End start;
-    class End end;
-    class InputProcessing,DownloadUserMedia,CleanScript,GeneratePrompt,FetchContent,GenerateAudio,GenerateImages,CombineMedia,ExtractAudio,TranscribeAudio,PhoneticCorrection,GenerateCaptionedVideo,AddMusic,UploadToS3,NotifyUser,TriggerWebhook,CleanupFiles,UploadZip,DeleteTempFiles process;
-    class UserMedia,ScriptCheck,ValidateSegments,CaptionCheck,BrandCheck,MusicCheck,S3Error,EmailError,WebhookError decision;
-    class ProcessingError,LogS3Error,LogEmailError,LogWebhookError error;
-    class RetryFetch success;
+    class Start start
+    class End end
+    class InputProcessing,DownloadUserMedia,CleanScript,GeneratePrompt,FetchContent,GenerateAudio,GenerateImages,CombineMedia,ExtractAudio,TranscribeAudio,PhoneticCorrection,GenerateCaptionedVideo,AddMusic,UploadToS3,NotifyUser,TriggerWebhook,CleanupFiles,UploadZip,DeleteTempFiles process
+    class UserMedia,ScriptCheck,ValidateSegments,CaptionCheck,BrandCheck,MusicCheck,S3Error,EmailError,WebhookError decision
+    class ProcessingError,LogS3Error,LogEmailError,LogWebhookError error
+    class RetryFetch success
 ```
 
 ## Prerequisites
