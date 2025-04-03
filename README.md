@@ -12,6 +12,120 @@ The Shorts Generator is a comprehensive pipeline that:
 - Adds captions, watermarks, and effects
 - Delivers the final product via email and webhooks
 
+
+```
+flowchart TD
+    %% Main flow
+    Start([Start]) --> InputProcessing["Process Task Information\n(topic, goal, user preferences)"]
+    InputProcessing --> UserMedia{"User Media\nProvided?"}
+    
+    %% User media handling
+    UserMedia -->|"Yes"| DownloadUserMedia["Download User Media\n(images, audio)"]
+    UserMedia -->|"No"| ScriptCheck
+    DownloadUserMedia --> ScriptCheck
+    
+    %% Script processing
+    ScriptCheck{"User Script\nProvided?"}
+    ScriptCheck -->|"Yes"| CleanScript["Clean User Script"]
+    ScriptCheck -->|"No"| GeneratePrompt["Generate Prompt\nfrom Topic & Goal"]
+    
+    CleanScript --> FetchContent
+    GeneratePrompt --> FetchContent
+    
+    %% Content generation
+    FetchContent["Fetch Image Descriptions & Script\nvia ChatGPT API"]
+    FetchContent --> ValidateSegments{"More than\n12 segments?"}
+    ValidateSegments -->|"Yes"| RetryFetch["Retry Fetch\n(limited to 2 attempts)"]
+    RetryFetch --> FetchContent
+    
+    ValidateSegments -->|"No"| GenerateAudio["Generate Audio Files\nfor Each Text Segment"]
+    GenerateAudio --> GenerateImages["Generate Images\n(skip for user-provided ones)"]
+    GenerateImages --> CombineMedia["Combine Images & Audio\ninto Base Video"]
+    
+    %% Caption processing
+    CombineMedia --> CaptionCheck{"Captions\nEnabled?"}
+    
+    CaptionCheck -->|"Yes"| ExtractAudio["Extract Audio\nfrom Video"]
+    ExtractAudio --> TranscribeAudio["Transcribe Audio\nwith OpenAI"]
+    
+    TranscribeAudio --> BrandCheck{"Brand Name\nProvided?"}
+    BrandCheck -->|"Yes"| PhoneticCorrection["Apply Phonetic\nCorrections"]
+    BrandCheck -->|"No"| GenerateCaptionedVideo
+    PhoneticCorrection --> GenerateCaptionedVideo
+    
+    GenerateCaptionedVideo["Generate Video with\nCaptions & Watermark"]
+    GenerateCaptionedVideo --> MusicCheck
+    
+    CaptionCheck -->|"No"| MusicCheck
+    
+    %% Final enhancements
+    MusicCheck{"Background\nMusic?"}
+    MusicCheck -->|"Yes"| AddMusic["Add Background Music"]
+    MusicCheck -->|"No"| UploadToS3
+    AddMusic --> UploadToS3
+    
+    %% Delivery
+    UploadToS3["Upload Final Video\nto S3 Storage"]
+    UploadToS3 --> S3Error{"Upload\nSuccessful?"}
+    S3Error -->|"No"| LogS3Error["Log S3 Error\n& Re-throw Exception"]
+    S3Error -->|"Yes"| NotifyUser
+    
+    NotifyUser["Send Email Notification\nto User"]
+    NotifyUser --> EmailError{"Email\nSent?"}
+    EmailError -->|"No"| LogEmailError["Log Email Error\n& Continue"]
+    EmailError -->|"Yes"| TriggerWebhook
+    LogEmailError --> TriggerWebhook
+    
+    TriggerWebhook["Trigger Webhook\nfor System Integration"]
+    TriggerWebhook --> WebhookError{"Webhook\nTriggered?"}
+    WebhookError -->|"No"| LogWebhookError["Log Webhook Error\n& Continue"]
+    WebhookError -->|"Yes"| CleanupFiles
+    LogWebhookError --> CleanupFiles
+    
+    %% Cleanup
+    CleanupFiles["Zip Temporary Files"]
+    CleanupFiles --> UploadZip["Upload Zip to S3\n(commented out in code)"]
+    UploadZip --> DeleteTempFiles["Delete Temporary Files\n(commented out in code)"]
+    DeleteTempFiles --> End([End])
+    
+    %% Error handling
+    LogS3Error --> End
+    
+    %% Global error handling
+    ProcessingError["Process Error:\n1. Log Error Message\n2. Trigger Failure Webhook"]
+    
+    InputProcessing -->|"Error"| ProcessingError
+    DownloadUserMedia -->|"Error"| ProcessingError
+    CleanScript -->|"Error"| ProcessingError
+    GeneratePrompt -->|"Error"| ProcessingError
+    FetchContent -->|"Error"| ProcessingError
+    GenerateAudio -->|"Error"| ProcessingError
+    GenerateImages -->|"Error"| ProcessingError
+    CombineMedia -->|"Error"| ProcessingError
+    ExtractAudio -->|"Error"| ProcessingError
+    TranscribeAudio -->|"Error"| ProcessingError
+    PhoneticCorrection -->|"Error"| ProcessingError
+    GenerateCaptionedVideo -->|"Error"| ProcessingError
+    AddMusic -->|"Error"| ProcessingError
+    
+    ProcessingError --> CleanupFiles
+    
+    %% Style definitions
+    classDef start fill:#4CAF50,stroke:#388E3C,color:white;
+    classDef end fill:#F44336,stroke:#D32F2F,color:white;
+    classDef process fill:#E3F2FD,stroke:#1976D2,color:#0D47A1;
+    classDef decision fill:#FFF9C4,stroke:#FBC02D,color:#5D4037;
+    classDef error fill:#FFEBEE,stroke:#C62828,color:#B71C1C;
+    classDef success fill:#E8F5E9,stroke:#388E3C,color:#1B5E20;
+    
+    class Start,End start;
+    class End end;
+    class InputProcessing,DownloadUserMedia,CleanScript,GeneratePrompt,FetchContent,GenerateAudio,GenerateImages,CombineMedia,ExtractAudio,TranscribeAudio,PhoneticCorrection,GenerateCaptionedVideo,AddMusic,UploadToS3,NotifyUser,TriggerWebhook,CleanupFiles,UploadZip,DeleteTempFiles process;
+    class UserMedia,ScriptCheck,ValidateSegments,CaptionCheck,BrandCheck,MusicCheck,S3Error,EmailError,WebhookError decision;
+    class ProcessingError,LogS3Error,LogEmailError,LogWebhookError error;
+    class RetryFetch success;
+```
+
 ## Prerequisites
 
 - Docker and Docker Compose
