@@ -13,7 +13,7 @@ The Shorts Generator is a comprehensive pipeline that:
 - Delivers the final product via email and webhooks
 
 
-```
+```mermaid
 flowchart TD
     %% Main flow
     Start([Start]) --> InputProcessing["Process Task Information\n(topic, goal, user preferences)"]
