@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1500">
+  <!-- Background -->
+  <rect width="800" height="1500" fill="#f8f9fa" rx="10" ry="10"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">Shorts Generator: Step-by-Step Flow</text>
+  
+  <!-- Flow elements -->
+  <!-- Start -->
+  <circle cx="400" cy="90" r="30" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+  <text x="400" y="95" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Start</text>
+  
+  <!-- Step 1: Receive Inputs -->
+  <rect x="250" y="140" width="300" height="70" rx="10" ry="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="400" y="170" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#1565c0">1. Receive Task Information</text>
+  <text x="400" y="190" font-family="Arial" font-size="12" text-anchor="middle" fill="#1565c0">topic, goal, user preferences, etc.</text>
+  
+  <!-- Step 2: Process User Media -->
+  <rect x="250" y="240" width="300" height="70" rx="10" ry="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="400" y="270" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#1565c0">2. Process User Media</text>
+  <text x="400" y="290" font-family="Arial" font-size="12" text-anchor="middle" fill="#1565c0">download user images and audio (if provided)</text>
+  
+  <!-- Decision: User Script -->
+  <path d="M400,340 L450,390 L400,440 L350,390 Z" fill="#fff9c4" stroke="#fbc02d" stroke-width="2"/>
+  <text x="400" y="395" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#5d4037">User Script?</text>
+  
+  <!-- Step 3A: Clean User Script -->
+  <rect x="500" y="390" width="250" height="50" rx="10" ry="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="625" y="420" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#2e7d32">3A. Clean User Script</text>
+  
+  <!-- Step 3B: Generate Prompt -->
+  <rect x="50" y="390" width="250" height="50" rx="10" ry="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="175" y="420" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#2e7d32">3B. Generate Prompt from Topic/Goal</text>
+  
+  <!-- Step 4: Get Image Descriptions and Script -->
+  <rect x="250" y="470" width="300" height="70" rx="10" ry="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="400" y="500" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#2e7d32">4. Fetch Image Descriptions and Script</text>
+  <text x="400" y="520" font-family="Arial" font-size="12" text-anchor="middle" fill="#2e7d32">using ChatGPT API (retry if > 12 segments)</text>
+  
+  <!-- Step 5: Generate Audio Files -->
+  <rect x="250" y="570" width="300" height="70" rx="10" ry="10" fill="#e0f7fa" stroke="#006064" stroke-width="2"/>
+  <text x="400" y="600" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#006064">5. Generate Audio Files</text>
+  <text x="400" y="620" font-family="Arial" font-size="12" text-anchor="middle" fill="#006064">convert text segments to speech audio files</text>
+  
+  <!-- Step 6: Generate Images -->
+  <rect x="250" y="670" width="300" height="70" rx="10" ry="10" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="400" y="700" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#e65100">6. Generate Images</text>
+  <text x="400" y="720" font-family="Arial" font-size="12" text-anchor="middle" fill="#e65100">for segments without user-provided images</text>
+  
+  <!-- Step 7: Combine Video and Audio -->
+  <rect x="250" y="770" width="300" height="70" rx="10" ry="10" fill="#e8eaf6" stroke="#3949ab" stroke-width="2"/>
+  <text x="400" y="800" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#3949ab">7. Combine Video and Audio</text>
+  <text x="400" y="820" font-family="Arial" font-size="12" text-anchor="middle" fill="#3949ab">create base video from images and audio</text>
+  
+  <!-- Decision: Captions Requested? -->
+  <path d="M400,870 L450,920 L400,970 L350,920 Z" fill="#fff9c4" stroke="#fbc02d" stroke-width="2"/>
+  <text x="400" y="925" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#5d4037">Captions?</text>
+  
+  <!-- Step 8A: Process Captions -->
+  <rect x="500" y="895" width="250" height="150" rx="10" ry="10" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2"/>
+  <text x="625" y="920" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#6a1b9a">8A. Process Captions</text>
+  <text x="625" y="945" font-family="Arial" font-size="12" text-anchor="middle" fill="#6a1b9a">1. Extract audio from video</text>
+  <text x="625" y="965" font-family="Arial" font-size="12" text-anchor="middle" fill="#6a1b9a">2. Transcribe using OpenAI</text>
+  <text x="625" y="985" font-family="Arial" font-size="12" text-anchor="middle" fill="#6a1b9a">3. Apply phonetic corrections</text>
+  <text x="625" y="1005" font-family="Arial" font-size="12" text-anchor="middle" fill="#6a1b9a">4. Generate video with captions</text>
+  <text x="625" y="1025" font-family="Arial" font-size="12" text-anchor="middle" fill="#6a1b9a">   watermarks, and text effects</text>
+  
+  <!-- Decision: Background Music? -->
+  <path d="M400,1000 L450,1050 L400,1100 L350,1050 Z" fill="#fff9c4" stroke="#fbc02d" stroke-width="2"/>
+  <text x="400" y="1055" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#5d4037">Music?</text>
+  
+  <!-- Step 9: Add Background Music -->
+  <rect x="500" y="1075" width="250" height="50" rx="10" ry="10" fill="#ffebee" stroke="#b71c1c" stroke-width="2"/>
+  <text x="625" y="1105" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#b71c1c">9. Add Background Music</text>
+  
+  <!-- Step 10: Upload to S3 -->
+  <rect x="250" y="1150" width="300" height="70" rx="10" ry="10" fill="#e0f2f1" stroke="#004d40" stroke-width="2"/>
+  <text x="400" y="1180" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#004d40">10. Upload to S3</text>
+  <text x="400" y="1200" font-family="Arial" font-size="12" text-anchor="middle" fill="#004d40">save final video and generate presigned URL</text>
+  
+  <!-- Step 11: User Notification -->
+  <rect x="250" y="1250" width="300" height="70" rx="10" ry="10" fill="#fce4ec" stroke="#880e4f" stroke-width="2"/>
+  <text x="400" y="1280" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#880e4f">11. Notify User</text>
+  <text x="400" y="1300" font-family="Arial" font-size="12" text-anchor="middle" fill="#880e4f">send email and trigger webhook</text>
+  
+  <!-- Step 12: Cleanup -->
+  <rect x="250" y="1350" width="300" height="70" rx="10" ry="10" fill="#ede7f6" stroke="#4527a0" stroke-width="2"/>
+  <text x="400" y="1380" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#4527a0">12. Cleanup</text>
+  <text x="400" y="1400" font-family="Arial" font-size="12" text-anchor="middle" fill="#4527a0">zip files and optionally archive/delete</text>
+  
+  <!-- End -->
+  <circle cx="400" cy="1450" r="30" fill="#f44336" stroke="#b71c1c" stroke-width="2"/>
+  <text x="400" y="1455" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">End</text>
+  
+  <!-- Flow Arrows -->
+  <!-- Start to Step 1 -->
+  <path d="M400,120 L400,140" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 1 to Step 2 -->
+  <path d="M400,210 L400,240" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 2 to Decision -->
+  <path d="M400,310 L400,340" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Decision to 3A -->
+  <path d="M450,390 L500,390" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="465" y="380" font-family="Arial" font-size="12" text-anchor="middle" fill="#666">Yes</text>
+  
+  <!-- Decision to 3B -->
+  <path d="M350,390 L300,390" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="335" y="380" font-family="Arial" font-size="12" text-anchor="middle" fill="#666">No</text>
+  
+  <!-- 3A to Step 4 -->
+  <path d="M625,440 L625,505 L550,505" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- 3B to Step 4 -->
+  <path d="M175,440 L175,505 L250,505" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 4 to Step 5 -->
+  <path d="M400,540 L400,570" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 5 to Step 6 -->
+  <path d="M400,640 L400,670" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 6 to Step 7 -->
+  <path d="M400,740 L400,770" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 7 to Decision Captions -->
+  <path d="M400,840 L400,870" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Decision Captions to Step 8A -->
+  <path d="M450,920 L500,920" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="465" y="910" font-family="Arial" font-size="12" text-anchor="middle" fill="#666">Yes</text>
+  
+  <!-- Step 8A to Background Music Decision -->
+  <path d="M625,1045 L625,1050 L450,1050" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Decision Captions to Background Music Decision -->
+  <path d="M400,970 L400,1000" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="410" y="985" font-family="Arial" font-size="12" text-anchor="middle" fill="#666">No</text>
+  
+  <!-- Decision Music to Step 9 -->
+  <path d="M450,1050 L500,1075" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="465" y="1040" font-family="Arial" font-size="12" text-anchor="middle" fill="#666">Yes</text>
+  
+  <!-- Step 9 to Step 10 -->
+  <path d="M625,1125 L625,1185 L550,1185" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Decision Music to Step 10 -->
+  <path d="M400,1100 L400,1150" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="410" y="1125" font-family="Arial" font-size="12" text-anchor="middle" fill="#666">No</text>
+  
+  <!-- Step 10 to Step 11 -->
+  <path d="M400,1220 L400,1250" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 11 to Step 12 -->
+  <path d="M400,1320 L400,1350" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 12 to End -->
+  <path d="M400,1420 L400,1450" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Error Handling Note -->
+  <rect x="20" y="1200" width="200" height="100" rx="10" ry="10" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" opacity="0.9"/>
+  <text x="120" y="1225" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#b71c1c">Error Handling</text>
+  <text x="120" y="1250" font-family="Arial" font-size="12" text-anchor="middle" fill="#b71c1c">- Try/catch at each step</text>
+  <text x="120" y="1270" font-family="Arial" font-size="12" text-anchor="middle" fill="#b71c1c">- Detailed logging</text>
+  <text x="120" y="1290" font-family="Arial" font-size="12" text-anchor="middle" fill="#b71c1c">- Failure notifications</text>
+  
+  <!-- Arrow Definitions -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+</svg>
