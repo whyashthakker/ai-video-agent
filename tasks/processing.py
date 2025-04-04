@@ -19,6 +19,7 @@ from script_generation.code import (
 from sound_generation.code import generate_and_save_audio
 from sound_generation.background_music import add_background_music
 from combine_videos.code import create_combined_video_audio
+from split_screen.code import create_split_screen_with_placeholder
 from timestamp_extraction.code import (
     extract_audio_from_video,
     transcribe_audio,
@@ -131,6 +132,15 @@ def shorts_generator(task_info):
 
             logging.info("AUDIO + VIDEO COMBINED")
 
+            split_screen_path = os.path.join(temp_dir, "split_screen.mp4")
+            finalvideoname = create_split_screen_with_placeholder(
+                finalvideoname,  # Use the output of your previous step as the B-roll
+                split_screen_path,
+                split_ratio=0.5,  # Adjust as needed - 0.5 means 50% top, 50% bottom
+            )
+
+            logging.info("SPLIT SCREEN CREATED")
+
             if caption_id != "0":
                 audiofilename = extract_audio_from_video(temp_dir, output_video_file)
 
@@ -220,20 +230,20 @@ def shorts_generator(task_info):
 
                 zip_directory(temp_dir, zip_path)
 
-#                 # Step 2: Upload to S3
-#                 unique_s3_path = f"{unique_uuid}.zip"
-#                 try:
-#                     upload_zip_to_s3(zip_path, unique_s3_path, userId="system")
-#                     logging.info(f"[UPLOADED ZIP TO S3]: {unique_uuid}")
+        #                 # Step 2: Upload to S3
+        #                 unique_s3_path = f"{unique_uuid}.zip"
+        #                 try:
+        #                     upload_zip_to_s3(zip_path, unique_s3_path, userId="system")
+        #                     logging.info(f"[UPLOADED ZIP TO S3]: {unique_uuid}")
 
-#                 except Exception as e:
-#                     logging.error(
-#                         f"Error uploading to S3 for {unique_uuid}. Error: {str(e)}"
-#                     )
+        #                 except Exception as e:
+        #                     logging.error(
+        #                         f"Error uploading to S3 for {unique_uuid}. Error: {str(e)}"
+        #                     )
 
-#                 # Step 3: Remove the temporary directory
-#                 shutil.rmtree(temp_dir)
-#                 logging.info(f"[CLEANED FILES]: {unique_uuid}")
+        #                 # Step 3: Remove the temporary directory
+        #                 shutil.rmtree(temp_dir)
+        #                 logging.info(f"[CLEANED FILES]: {unique_uuid}")
 
         except Exception as e:
             logging.error(f"Error cleaning up files for {unique_uuid}. Error: {str(e)}")
