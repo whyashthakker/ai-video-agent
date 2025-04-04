@@ -29,9 +29,8 @@ from timestamp_extraction.code import (
 from transcript_correction.code import phonetic_correction
 from communication import *
 from s3_operations.code import upload_to_s3, upload_zip_to_s3
-
 from file_operations import zip_directory
-
+from talking_avatar.code import create_talking_head_split_screen
 
 # @celery_app.task(name="shorts_generator", queue="shorts_generator")
 def shorts_generator(task_info):
@@ -57,6 +56,7 @@ def shorts_generator(task_info):
     add_brolls = task_info.get("add_brolls")
     user_mp3s = task_info.get("user_mp3s", [])
     user_script = task_info.get("user_script")
+    avatar_id = task_info.get("avatar_id") 
 
     try:
         video_output_filename = "combined_video.mp4"
@@ -68,14 +68,10 @@ def shorts_generator(task_info):
 
         if user_images is not None and len(user_images) > 0:
             saved_images_count = download_and_save_user_images(user_images, temp_dir)
-
         else:
             saved_images_count = 0
 
         voice_id = received_voice_id if received_voice_id else "alloy"
-
-        # length of user images:
-        # user_images_count = saved_images_count)
 
         try:
             fetch_attempts = 0
@@ -131,22 +127,55 @@ def shorts_generator(task_info):
             )
 
             logging.info("AUDIO + VIDEO COMBINED")
+            
+            # Create a combined script with proper spacing between segments
+            combined_script = " ".join(texts)
+            
+            # Path for the talking head video and final output
+            talking_head_path = os.path.join(temp_dir, "heygen_talking_head.mp4")
+            combined_output_path = os.path.join(temp_dir, "combined_with_talking_head.mp4")
+            
+            try:
+                # Generate the talking head video using Heygen API
+                logging.info("Generating talking head video with Heygen API")
+                combined_output_path = os.path.join(temp_dir, "combined_with_talking_head.mp4")
 
-            split_screen_path = os.path.join(temp_dir, "split_screen.mp4")
-            finalvideoname = create_split_screen_with_placeholder(
-                finalvideoname,  # Use the output of your previous step as the B-roll
-                split_screen_path,
-                split_ratio=0.5,  # Adjust as needed - 0.5 means 50% top, 50% bottom
-            )
-
-            logging.info("SPLIT SCREEN CREATED")
+                finalvideoname = create_talking_head_split_screen(
+                    temp_dir=temp_dir,
+                    script=combined_script,
+                    split_screen_path=finalvideoname,
+                    output_path=combined_output_path,
+                    avatar_id=avatar_id,
+                    voice_id=voice_id
+                )
+                
+                # Combine the B-roll with the talking head in split screen format
+                logging.info("TALKING HEAD VIDEO GENERATED AND COMBINED")
+                finalvideoname = combine_broll_with_talking_head(
+                    broll_path=finalvideoname,
+                    talking_head_path=talking_head_path,
+                    output_path=combined_output_path,
+                    temp_dir=temp_dir
+                )
+                
+                logging.info("TALKING HEAD VIDEO GENERATED AND COMBINED")
+            except Exception as e:
+                logging.error(f"Error generating talking head video: {str(e)}")
+                # Fall back to placeholder if talking head generation fails
+                logging.info("Falling back to placeholder split screen")
+                split_screen_path = os.path.join(temp_dir, "split_screen.mp4")
+                finalvideoname = create_split_screen_with_placeholder(
+                    finalvideoname,
+                    split_screen_path,
+                    split_ratio=0.5
+                )
+                
+                logging.info("PLACEHOLDER SPLIT SCREEN CREATED")
 
             if caption_id != "0":
                 audiofilename = extract_audio_from_video(temp_dir, output_video_file)
 
                 logging.info("[AUDIO EXTRACTED FROM VIDEO]")
-
-                # wordlevel_info = transcribe_audio(audiofilename)
 
                 wordlevel_info = transcribe_audio_with_openai(audiofilename)
 
@@ -225,25 +254,22 @@ def shorts_generator(task_info):
         try:
             if os.path.exists(temp_dir):
                 # Step 1: Zip the directory
-
                 zip_path = os.path.join(temp_dir, f"{temp_dir}.zip")
-
                 zip_directory(temp_dir, zip_path)
-
-        #                 # Step 2: Upload to S3
-        #                 unique_s3_path = f"{unique_uuid}.zip"
-        #                 try:
-        #                     upload_zip_to_s3(zip_path, unique_s3_path, userId="system")
-        #                     logging.info(f"[UPLOADED ZIP TO S3]: {unique_uuid}")
-
-        #                 except Exception as e:
-        #                     logging.error(
-        #                         f"Error uploading to S3 for {unique_uuid}. Error: {str(e)}"
-        #                     )
-
-        #                 # Step 3: Remove the temporary directory
-        #                 shutil.rmtree(temp_dir)
-        #                 logging.info(f"[CLEANED FILES]: {unique_uuid}")
+                
+                # You can uncomment the below if you want to upload and clean up
+                # # Step 2: Upload to S3
+                # unique_s3_path = f"{unique_uuid}.zip"
+                # try:
+                #     upload_zip_to_s3(zip_path, unique_s3_path, userId="system")
+                #     logging.info(f"[UPLOADED ZIP TO S3]: {unique_uuid}")
+                # except Exception as e:
+                #     logging.error(
+                #         f"Error uploading to S3 for {unique_uuid}. Error: {str(e)}"
+                #     )
+                # # Step 3: Remove the temporary directory
+                # shutil.rmtree(temp_dir)
+                # logging.info(f"[CLEANED FILES]: {unique_uuid}")
 
         except Exception as e:
             logging.error(f"Error cleaning up files for {unique_uuid}. Error: {str(e)}")
